@@ -22,6 +22,8 @@ public class StartStopButton extends JComponent {
     private Dimension d;
     private Thread thr;
 
+    private enum OSType {OSX, MS, LINUX, UNKNOWN};
+
     public StartStopButton() {
         d = new Dimension(80, 25);
         setSize(d);
@@ -59,13 +61,35 @@ public class StartStopButton extends JComponent {
                                     TimerPanel.getInstance().setT("00:00:00");
                                     stop = true;
                                     TimerPanel.getInstance().repaint();
-                                    try {
-                                        Runtime.getRuntime().exec(
-                                                "Shutdown.exe -s -t 00 -f");
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    } finally {
-                                        thr.stop();
+                                    OSType os = getOSType();
+                                    switch (os) {
+                                        case OSX:
+                                            try {
+                                                Runtime.getRuntime().exec("shutdown -h now");
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            } finally {
+                                                thr.stop();
+                                            }
+                                            break;
+                                        case MS:
+                                            try {
+                                                Runtime.getRuntime().exec("Shutdown.exe -s -t 00 -f");
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            } finally {
+                                                thr.stop();
+                                            }
+                                            break;
+                                        case LINUX:
+                                            try {
+                                                Runtime.getRuntime().exec("shutdown -h now");
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            } finally {
+                                                thr.stop();
+                                            }
+                                            break;
                                     }
                                 }
 
@@ -162,6 +186,19 @@ public class StartStopButton extends JComponent {
 
     public void setStop(boolean stop) {
         this.stop = stop;
+    }
+
+    private OSType getOSType() {
+        String os = System.getProperty("os.name", "").toLowerCase();
+        if (os.startsWith("windows")) {
+            return OSType.MS;
+        } else if (os.startsWith("linux")) {
+            return OSType.LINUX;
+        } else if (os.startsWith("mac") || os.startsWith("darwin")) {
+            return OSType.OSX;
+        } else {
+            return OSType.UNKNOWN;
+        }
     }
 
 }
