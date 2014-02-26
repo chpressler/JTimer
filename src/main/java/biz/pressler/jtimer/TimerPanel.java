@@ -30,10 +30,10 @@ class TimerPanel extends JPanel {
     private CloseButton cb;
     private int percent = 0;
     private String info = "christian.pressler@gmail.com - Java, meine Perle °";
-    private String infostr = "info";
+    private String infostr = "jTimer v1.0";
 
     public void setInfoString() {
-        infostr = "info";
+        infostr = "jTimer v1.0";
     }
 
     public void setInfo() {

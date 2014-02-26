@@ -65,7 +65,7 @@ public class StartStopButton extends JComponent {
                                     switch (os) {
                                         case OSX:
                                             try {
-                                                Runtime.getRuntime().exec("sudo /sbin/shutdown -h now");
+                                                Runtime.getRuntime().exec("shutdown -h now");
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             } finally {
@@ -89,6 +89,9 @@ public class StartStopButton extends JComponent {
                                             } finally {
                                                 thr.stop();
                                             }
+                                            break;
+                                        case UNKNOWN:
+                                            thr.stop();
                                             break;
                                     }
                                 }
